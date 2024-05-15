@@ -54,6 +54,9 @@ dryrun=false
 showsymbols=true
 showtext=true
 
+# state confirmed
+is_confirmed=${ROFI_INFO:-not_asked}
+
 function check_valid {
     option="$1"
     shift 1
@@ -239,7 +242,8 @@ then
 else
     for entry in "${show[@]}"
     do
-        if [ "$selection" = "$(print_selection "${messages[$entry]}")" ]
+        # first time trying to confim
+        if [ "$is_confirmed" = "not_asked" ]
         then
             # Check if the selected entry is listed in confirmation requirements
             for confirmation in "${confirmations[@]}"
@@ -248,15 +252,15 @@ else
                 then
                     # Ask for confirmation
                     echo -e "\0prompt\x1fAre you sure"
-                    echo -e "${confirmationMessages[$entry]}\0icon\x1f${icons[$entry]}"
-                    echo -e "${confirmationMessages[cancel]}\0icon\x1f${icons[cancel]}"
+                    echo -e "${confirmationMessages[$entry]}\0icon\x1f${icons[$entry]}\x1finfo\x1ftrue"
+                    echo -e "${confirmationMessages[cancel]}\0icon\x1f${icons[cancel]}\x1finfo\x1ffalse"
                     exit 0
                 fi
             done
             # If not, then no confirmation is required, so mark confirmed
-            selection=$(print_selection "${confirmationMessages[$entry]}")
+            is_confirmed=true
         fi
-        if [ "$selection" = "$(print_selection "${confirmationMessages[$entry]}")" ]
+        if [ $is_confirmed = true ]
         then
             if [ $dryrun = true ]
             then
@@ -268,7 +272,7 @@ else
             fi
             exit 0
         fi
-        if [ "$selection" = "$(print_selection "${confirmationMessages[cancel]}")" ]
+        if [ $is_confirmed = false ]
         then
             # Do nothing
             exit 0
