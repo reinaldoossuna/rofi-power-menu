@@ -246,7 +246,7 @@ else
     for entry in "${show[@]}"
     do
         # first time trying to confim
-        if [ "$is_confirmed" = "not_asked" ]
+        if [[  "$is_confirmed" = "not_asked" && "$selection" = "$(print_selection "${messages[$entry]}")"  ]]
         then
             # Check if the selected entry is listed in confirmation requirements
             for confirmation in "${confirmations[@]}"
@@ -263,7 +263,7 @@ else
             # If not, then no confirmation is required, so mark confirmed
             is_confirmed=true
         fi
-        if [ $is_confirmed = true ]
+        if [[  $is_confirmed = true && "$selection" = "$(print_selection "${confirmationMessages[$entry]}")"  ]]
         then
             if [ $dryrun = true ]
             then
