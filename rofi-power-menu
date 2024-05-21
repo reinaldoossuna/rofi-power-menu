@@ -240,7 +240,7 @@ if [ -z "${selection+x}" ]
 then
     for entry in "${show[@]}"
     do
-        echo -e "${messages[$entry]}\0icon\x1f${icons[$entry]}"
+        echo -e "${messages[$entry]}"
     done
 else
     for entry in "${show[@]}"
@@ -255,8 +255,8 @@ else
                 then
                     # Ask for confirmation
                     echo -e "\0prompt\x1fAre you sure"
-                    echo -e "${confirmationMessages[$entry]}\0icon\x1f${icons[$entry]}\x1finfo\x1ftrue"
-                    echo -e "${confirmationMessages[cancel]}\0icon\x1f${icons[cancel]}\x1finfo\x1ffalse"
+                    echo -e "${confirmationMessages[$entry]}\0info\x1ftrue"
+                    echo -e "${confirmationMessages[cancel]}\0info\x1ffalse"
                     exit 0
                 fi
             done
