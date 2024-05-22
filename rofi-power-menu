@@ -255,6 +255,9 @@ else
                 then
                     # Ask for confirmation
                     echo -e "\0prompt\x1fAre you sure"
+                    echo -en "\0urgent\x1f0\n"
+                    echo -en "\0keep-selection\x1ftrue"
+                    echo -en "\0new-selection\x1f1\n"
                     echo -e "${confirmationMessages[$entry]}\0info\x1ftrue"
                     echo -e "${confirmationMessages[cancel]}\0info\x1ffalse"
                     exit 0
